@@ -14,7 +14,7 @@
                     style="height: 100%; text-align: center;">
                     <div>
                         <!-- Profile Image -->
-                        <img id="profileImagePreview" src="{{ asset('storage/profile_images/default.png') }}"
+                        <img id="profileImagePreview" src="{{ asset('storage/default.png') }}"
                             alt="Default Image" class="rounded-circle mb-3 border border-secondary"
                             style="width: 150px; height: 150px; object-fit: cover;">
 

@@ -25,7 +25,7 @@
                                 class="rounded-circle border border-secondary mx-auto d-block"
                                 style="width: 120px; height: 120px; object-fit: cover;">
                         @else
-                            <img src="{{ asset('storage/profile_images/default.png') }}" alt="Default Image"
+                            <img src="{{ asset('storage/default.png') }}" alt="Default Image"
                                 class="rounded-circle border border-secondary mx-auto d-block"
                                 style="width: 120px; height: 120px; object-fit: cover;">
                         @endif

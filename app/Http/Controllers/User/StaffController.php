@@ -61,7 +61,11 @@ class StaffController extends Controller
             return redirect()->back()->withErrors($validator->errors())->withInput()->with('error', 'Validation : ' . $validator->errors());
         }
 
-        $data = $request->all();
+        $data = [
+            'email_personal' => $request->email_personal,
+            'phone_number' => $request->phone_number,
+            'profile_image' => $staff->profile_image,
+        ];
 
         // Handle Profile Image Update
         if ($request->hasFile('profile_image')) {
@@ -102,6 +106,8 @@ class StaffController extends Controller
             'staff' => $staff,
             'changeLogs' => $changeLogs,
         ];
+
+        // dd($staff->internDetails);
 
         return view('user.staff.show', $viewData);
     }

@@ -24,8 +24,8 @@
                                     style="width: 150px; height: 150px; object-fit: cover;">
                             @else
                                 <!-- Profile Image -->
-                                <img id="profileImagePreview" src="{{ asset('storage/profile_images/default.png') }}"
-                                    alt="Default Image" class="rounded-circle mb-3 border border-secondary"
+                                <img id="profileImagePreview" src="{{ asset('storage/default.png') }}" alt="Default Image"
+                                    class="rounded-circle mb-3 border border-secondary"
                                     style="width: 150px; height: 150px; object-fit: cover;">
                             @endif
 
@@ -68,28 +68,27 @@
                                     <div class="mb-3">
                                         <label for="full_name" class="form-label">Full Name</label>
                                         <input type="text" name="full_name" id="full_name" class="form-control"
-                                            value="{{ old('full_name', $staff->full_name) }}" required readonly>
+                                            value="{{ old('full_name', $staff->full_name) }}" readonly>
                                     </div>
                                     <div class="mb-3">
                                         <label for="nric" class="form-label">NRIC</label>
                                         <input type="text" name="nric" id="nric" class="form-control"
-                                            value="{{ old('nric', $staff->nric) }}" required readonly>
+                                            value="{{ old('nric', $staff->nric) }}"  readonly>
                                     </div>
                                     <div class="mb-3">
                                         <label for="email_personal" class="form-label">Personal Email</label>
                                         <input type="email" name="email_personal" id="email_personal" class="form-control"
-                                            value="{{ old('email_personal', $staff->email_personal) }}">
+                                            value="{{ old('email_personal', $staff->email_personal) }}" required>
                                     </div>
                                     <div class="mb-3">
                                         <label for="email_company" class="form-label">Company Email</label>
-                                        <input type="email" name="email_company" id="email_company"
-                                            class="form-control"
+                                        <input type="email" name="email_company" id="email_company" class="form-control"
                                             value="{{ old('email_company', $staff->email_company) }}" readonly>
                                     </div>
                                     <div class="mb-3">
                                         <label for="phone_number" class="form-label">Phone Number</label>
                                         <input type="text" name="phone_number" id="phone_number" class="form-control"
-                                            value="{{ old('phone_number', $staff->phone_number) }}">
+                                            value="{{ old('phone_number', $staff->phone_number) }}" required>
                                     </div>
 
                                     <!-- Buttons Group (Back & Update) -->
@@ -108,8 +107,8 @@
                                     <div class="mb-3">
                                         <label for="starting_date" class="form-label">Starting Date</label>
                                         <input type="date" name="starting_date" id="starting_date"
-                                            class="form-control"
-                                            value="{{ old('starting_date', $staff->starting_date) }}" required readonly>
+                                            class="form-control" value="{{ old('starting_date', $staff->starting_date) }}"
+                                            required readonly>
                                     </div>
                                     <div class="mb-3">
                                         <label for="work_type" class="form-label">Work Type</label>
@@ -137,43 +136,54 @@
                                         <div class="mb-3">
                                             <label for="university" class="form-label">University</label>
                                             <input type="text" name="university" id="university" class="form-control"
-                                                value="{{ old('university', $staff->internDetails->university ?? '') }}" readonly>
+                                                value="{{ old('university', $staff->internDetails->university ?? '') }}"
+                                                readonly>
                                         </div>
                                         <div class="mb-3">
                                             <label for="date_start" class="form-label">Internship Start Date</label>
                                             <input type="date" name="date_start" id="date_start" class="form-control"
-                                                value="{{ old('date_start', $staff->internDetails->date_start ?? '') }}" readonly>
+                                                value="{{ old('date_start', $staff->internDetails->date_start ?? '') }}"
+                                                readonly>
                                         </div>
                                         <div class="mb-3">
                                             <label for="date_end" class="form-label">Internship End Date</label>
                                             <input type="date" name="date_end" id="date_end" class="form-control"
-                                                value="{{ old('date_end', $staff->internDetails->date_end ?? '') }}" readonly>
+                                                value="{{ old('date_end', $staff->internDetails->date_end ?? '') }}"
+                                                readonly>
                                         </div>
                                         <div class="mb-3">
                                             <label for="supervisor_id" class="form-label">Supervisor</label>
                                             {{-- <select name="supervisor_id" id="supervisor_id" class="form-control">
                                                 <option value="{{ $staff->id }}">{{ $staff->full_name }}</option>
                                             </select> --}}
-                                            @foreach ($staffList as $supervisor)
-                                                @if ($supervisor->id === $staff->internDetails->supervisor_id)
-                                                    <input type="text" name="supervisor_id" id="supervisor_id"
-                                                        class="form-control" value="{{ $supervisor->full_name }}" readonly> 
-                                                @endif
-                                            @endforeach
+                                            @if ($staff->internDetails === null)
+                                                <input type="text" name="supervisor_id" id="supervisor_id"
+                                                    class="form-control" value="No supervisor assigned" readonly>
+                                            @else
+                                                @foreach ($staffList as $supervisor)
+                                                    @if ($supervisor->id === $staff->internDetails->supervisor_id)
+                                                        <input type="text" name="supervisor_id" id="supervisor_id"
+                                                            class="form-control" value="{{ $supervisor->full_name }}"
+                                                            readonly>
+                                                    @endif
+                                                @endforeach
+                                            @endif
                                         </div>
                                         <div class="mb-3">
                                             <label for="university_supervisor" class="form-label">University
                                                 Supervisor</label>
                                             <input type="text" name="university_supervisor" id="university_supervisor"
                                                 class="form-control"
-                                                value="{{ old('university_supervisor', $staff->internDetails->university_supervisor ?? '') }}" readonly>
+                                                value="{{ old('university_supervisor', $staff->internDetails->university_supervisor ?? '') }}"
+                                                readonly>
                                         </div>
                                         <div class="mb-3">
                                             <label for="university_supervisor_contact" class="form-label">University
                                                 Supervisor Contact</label>
                                             <input type="text" name="university_supervisor_contact"
                                                 id="university_supervisor_contact" class="form-control"
-                                                value="{{ old('university_supervisor_contact', $staff->internDetails->university_supervisor_contact ?? '') }}" readonly>
+                                                value="{{ old('university_supervisor_contact', $staff->internDetails->university_supervisor_contact ?? '') }}"
+                                                readonly>
                                         </div>
                                         {{-- additional details --}}
                                         <div class="mb-3">
