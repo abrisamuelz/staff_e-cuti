@@ -22,6 +22,11 @@
                         <x-nav-link href="{{ route('admin.staff.index') }}" :active="request()->routeIs('admin.staff.*')">
                             {{ __('Manage Staff') }}
                         </x-nav-link>
+
+                        {{-- manage user --}}
+                        <x-nav-link href="{{ route('admin.user.index') }}" :active="request()->routeIs('admin.user.*')">
+                            {{ __('Manage User') }}
+                        </x-nav-link>
                     @endif
                 </div>
             </div>
@@ -118,11 +123,11 @@
                                 {{ __('Profile') }}
                             </x-dropdown-link>
 
-                            @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
+                            {{-- @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
                                 <x-dropdown-link href="{{ route('api-tokens.index') }}">
                                     {{ __('API Tokens') }}
                                 </x-dropdown-link>
-                            @endif
+                            @endif --}}
 
                             @if (auth()->check() && auth()->user()->role === 'admin')
                                 <x-dropdown-link href="{{ route('admin.staff.trashed') }}">
@@ -191,11 +196,11 @@
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
 
-                @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
+                {{-- @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
                     <x-responsive-nav-link href="{{ route('api-tokens.index') }}" :active="request()->routeIs('api-tokens.index')">
                         {{ __('API Tokens') }}
                     </x-responsive-nav-link>
-                @endif
+                @endif --}}
 
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}" x-data>

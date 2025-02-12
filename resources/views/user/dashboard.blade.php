@@ -76,12 +76,6 @@
                         <h6>System 4</h6>
                     </a>
                 </div>
-                <div class="col">
-                    <a href="{{ route('admin.staff.edit', $staff->id) }}" class="card text-center p-3 shadow-sm border-0">
-                        <i class="fas fa-user-edit fa-2x text-primary"></i>
-                        <h6>Edit Profile</h6>
-                    </a>
-                </div>
             </div>
         @else
             <div class="alert alert-danger">Your account not registered in this system.</div>

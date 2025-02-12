@@ -6,6 +6,7 @@ use App\Models\Staff;
 use App\Models\WorkTypeLog;
 use App\Models\InternDetail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -68,14 +69,12 @@ class StaffController extends Controller
             'additional_details' => 'nullable|string',
         ]);
 
-        // dd($request->all() , $validator->fails(), $validator->errors());
-
-        // If validation fails, return with errors
         if ($validator->fails()) {
+            
             return redirect()->back()->withErrors($validator->errors())->withInput()->with('error', 'Validation failed');
         }
 
-        // Additional Validation for Intern
+        // Additional Validation for Interns
         if ($request->work_type === 'intern') {
             $internValidator = Validator::make($request->all(), [
                 'university' => 'required|string|max:255',
@@ -86,28 +85,24 @@ class StaffController extends Controller
                 'university_supervisor_contact' => 'required|string|max:20',
             ]);
 
-            // If intern validation fails, return with errors
             if ($internValidator->fails()) {
                 return redirect()->back()->withErrors($internValidator->errors())->withInput()->with('error', 'Validation failed');
             }
         }
 
-        $data = $request->all();
-
-        $staff = Staff::create($data);
+        // Prepare data excluding file uploads
+        $data = $request->except(['profile_image']);
 
         // Handle Profile Image Upload
         if ($request->hasFile('profile_image')) {
-            // Delete old image if exists
-            if ($staff->profile_image) {
-                Storage::disk('public')->delete($staff->profile_image);
-            }
-
-            // Store new image
-            $imagePath = $request->file('profile_image')->store('profile_images', 'public');
-            $data['profile_image'] = $imagePath;
+            $data['profile_image'] = $request->file('profile_image')->store('profile_images', 'public');
         }
 
+        // Create Staff Record
+        $staff = Staff::create($data);
+        Log::info('Staff Created Successfully:', $staff->toArray());
+
+        // If Intern, Create Intern Details
         if ($request->work_type === 'intern') {
             InternDetail::create([
                 'staff_id' => $staff->id,
@@ -119,6 +114,7 @@ class StaffController extends Controller
                 'university_supervisor_contact' => $request->university_supervisor_contact,
                 'other_details' => $request->additional_details,
             ]);
+            Log::info('Intern Details Created for Staff ID: ' . $staff->id);
         }
 
         // Log Changes to Work Type
@@ -129,15 +125,17 @@ class StaffController extends Controller
             'updated_by' => Auth::id(),
             'start_date' => $request->starting_date,
         ]);
+        Log::info('Work Type Log Created');
 
         // If work type is terminated, update the staff's reason for termination
         if ($request->work_type === 'terminated') {
             $staff->update(['reason' => $request->reason]);
+            Log::info('Termination Reason Updated for Staff ID: ' . $staff->id);
         }
-
 
         return redirect()->route('admin.staff.index')->with('success', 'Staff created successfully.');
     }
+
 
     public function edit($id)
     {
@@ -274,11 +272,19 @@ class StaffController extends Controller
 
     public function show($id)
     {
+        // get all staff name and id
+        $staffList = Staff::select('id', 'full_name')->get();
+
+        // filter current staff
+        $staffList = $staffList->filter(function ($value, $key) use ($id) {
+            return $value->id != $id;
+        });
         $staff = Staff::with('internDetails')->findOrFail($id);
         $changeLogs = WorkTypeLog::where('staff_id', $id)->orderBy('created_at', 'desc')->get();
 
         $viewData = [
             'staff' => $staff,
+            'staffList' => $staffList,
             'changeLogs' => $changeLogs,
         ];
 

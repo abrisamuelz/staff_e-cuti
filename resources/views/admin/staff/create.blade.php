@@ -7,33 +7,33 @@
                 <h1 class="fw-bold text-dark mb-0">Staff Details - Create</h1>
             </div>
         </div>
-        <div class="row">
-            <!-- Profile Image -->
-            <div class="col-md-4">
-                <div class="card p-3 d-flex align-items-center justify-content-center"
-                    style="height: 100%; text-align: center;">
-                    <div>
-                        <!-- Profile Image -->
-                        <img id="profileImagePreview" src="{{ asset('storage/default.png') }}"
-                            alt="Default Image" class="rounded-circle mb-3 border border-secondary"
-                            style="width: 150px; height: 150px; object-fit: cover;">
+        <form action="{{ route('admin.staff.store') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="row">
+                <!-- Profile Image -->
+                <div class="col-md-4">
+                    <div class="card p-3 d-flex align-items-center justify-content-center"
+                        style="height: 100%; text-align: center;">
+                        <div>
+                            <!-- Profile Image -->
+                            <img id="profileImagePreview" src="{{ asset('storage/default.png') }}" alt="Default Image"
+                                class="rounded-circle mb-3 border border-secondary"
+                                style="width: 150px; height: 150px; object-fit: cover;">
 
-                        <!-- File Upload -->
-                        <label for="profile_image" class="btn btn-outline-primary btn-sm mt-3">
-                            Upload Profile Image
-                            <input type="file" name="profile_image" id="profile_image" class="d-none">
-                        </label>
-                        @error('profile_image')
-                            <small class="text-danger">{{ $message }}</small>
-                        @enderror
+                            <!-- File Upload -->
+                            <label for="profile_image" class="btn btn-outline-primary btn-sm mt-3">
+                                Upload Profile Image
+                                <input type="file" name="profile_image" id="profile_image" class="d-none">
+                            </label>
+                            @error('profile_image')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Details Card -->
-            <div class="col-md-8">
-                <form action="{{ route('admin.staff.store') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
+                <!-- Details Card -->
+                <div class="col-md-8">
                     <div class="card">
                         <div class="card-header">
                             <ul class="nav nav-tabs card-header-tabs" id="staffTabs" role="tablist">
@@ -115,9 +115,9 @@
                                                 {{ old('work_type') === 'contract' ? 'selected' : '' }}>Contract</option>
                                             <option value="intern" {{ old('work_type') === 'intern' ? 'selected' : '' }}>
                                                 Intern</option>
-                                            <option value="terminated"
+                                            {{-- <option value="terminated"
                                                 {{ old('work_type') === 'terminated' ? 'selected' : '' }}>Terminated
-                                            </option>
+                                            </option> --}}
                                         </select>
                                         @error('work_type')
                                             <small class="text-danger">{{ $message }}</small>
@@ -125,13 +125,13 @@
                                     </div>
 
                                     <!-- Intern Details
-                                                'university' => 'required|string|max:255',
-                                                'date_start' => 'required|date',
-                                                'date_end' => 'required|date|after_or_equal:date_start',
-                                                'supervisor_id' => 'nullable|exists:staff,id',
-                                                'university_supervisor' => 'required|string|max:255',
-                                                'university_supervisor_contact' => 'required|string|max:20',
-                                            -->
+                                                            'university' => 'required|string|max:255',
+                                                            'date_start' => 'required|date',
+                                                            'date_end' => 'required|date|after_or_equal:date_start',
+                                                            'supervisor_id' => 'nullable|exists:staff,id',
+                                                            'university_supervisor' => 'required|string|max:255',
+                                                            'university_supervisor_contact' => 'required|string|max:20',
+                                                        -->
                                     <div id="intern-details" style="display: none;">
                                         <div class="mb-3">
                                             <label for="university" class="form-label">University</label>
@@ -215,9 +215,10 @@
                             <button type="submit" class="btn btn-success">Create Staff</button>
                         </div>
                     </div>
-                </form>
+
+                </div>
             </div>
-        </div>
+        </form>
     </div>
 
     <script>
@@ -250,12 +251,21 @@
     </script>
 
     <script>
-        document.getElementById('profile_image').addEventListener('change', function(event) {
-            const [file] = event.target.files;
-            if (file) {
-                const preview = document.getElementById('profileImagePreview');
-                preview.src = URL.createObjectURL(file);
-            }
-        });
+        function showInternDetails() {
+            internDetails.style.display = 'block';
+            terminatedDetails.style.display = 'none';
+        }
+
+        function showTerminatedDetails() {
+            terminatedDetails.style.display = 'block';
+            internDetails.style.display = 'none';
+        }
+
+        // Show the relevant details when the page loads
+        if (workTypeSelect.value === 'intern') {
+            showInternDetails();
+        } else if (workTypeSelect.value === 'terminated') {
+            showTerminatedDetails();
+        }
     </script>
 @endsection
