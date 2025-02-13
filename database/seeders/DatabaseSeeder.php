@@ -15,11 +15,11 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Administrator',
-            'email' => 'admin@enomatrix.com',
-            'password' => bcrypt('admin@123'),
-            'role' => 'admin',
-        ]);
+        // User::factory()->create([
+        //     'name' => 'Administrator',
+        //     'email' => 'admin@enomatrix.com',
+        //     'password' => bcrypt('admin@123'),
+        //     'role' => 'admin',
+        // ]);
     }
 }

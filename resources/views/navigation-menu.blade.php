@@ -18,7 +18,7 @@
 
                     <!-- Admin Links (Only for Admins) -->
                     @if (auth()->check() && auth()->user()->role === 'admin')
-                    {{-- active acept route --}}
+                        {{-- active acept route --}}
                         <x-nav-link href="{{ route('admin.staff.index') }}" :active="request()->routeIs('admin.staff.*')">
                             {{ __('Manage Staff') }}
                         </x-nav-link>
@@ -138,13 +138,15 @@
                             <div class="border-t border-gray-200"></div>
 
                             <!-- Authentication -->
-                            <form method="POST" action="{{ route('logout') }}" x-data>
-                                @csrf
 
-                                <x-dropdown-link href="{{ route('logout') }}" @click.prevent="$root.submit();">
-                                    {{ __('Log Out') }}
-                                </x-dropdown-link>
-                            </form>
+                            <x-dropdown-link href="#"
+                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                {{ __('Log Out') }}
+                            </x-dropdown-link>
+
+                            {{-- <x-dropdown-link href="http://staff.test/logout?redirect={{ urlencode('http://e-cuti.test/local-logout') }}">
+                                {{ __('Log Out') }}
+                            </x-dropdown-link> --}}
                         </x-slot>
                     </x-dropdown>
                 </div>
@@ -203,13 +205,17 @@
                 @endif --}}
 
                 <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}" x-data>
+                <form id="logout-form" action="http://staff.test/logout?redirect={{ urlencode('http://e-cuti.test/local-logout') }}" method="POST" style="display:none;">
                     @csrf
-
-                    <x-responsive-nav-link href="{{ route('logout') }}" @click.prevent="$root.submit();">
-                        {{ __('Log Out') }}
-                    </x-responsive-nav-link>
                 </form>
+                <x-responsive-nav-link href="#"
+                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    {{ __('Log Out') }}
+                </x-responsive-nav-link>
+
+                {{-- <x-responsive-nav-link href="http://staff.test/logout?redirect={{ urlencode('http://e-cuti.test/local-logout') }}">
+                    {{ __('Log Out') }}
+                </x-responsive-nav-link> --}}
 
                 <!-- Team Management -->
                 @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
