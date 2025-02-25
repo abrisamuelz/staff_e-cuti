@@ -114,13 +114,17 @@
                         </x-slot>
 
                         <x-slot name="content">
+                            <x-dropdown-link href="{{ env('OAUTH_SERVER_URL') }}">
+                                <i class="fas fa-home"></i></i> {{ __('CSMS Dashboard') }}
+                            </x-dropdown-link>
+
                             <!-- Account Management -->
-                            <div class="block px-4 py-2 text-xs text-gray-400">
+                            {{-- <div class="block px-4 py-2 text-xs text-gray-400">
                                 {{ __('Manage Account') }}
-                            </div>
+                            </div> --}}
 
                             <x-dropdown-link href="{{ route('profile.show') }}">
-                                {{ __('Profile') }}
+                                <i class="fas fa-user"></i> {{ __('Profile') }} 
                             </x-dropdown-link>
 
                             {{-- @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
@@ -129,11 +133,11 @@
                                 </x-dropdown-link>
                             @endif --}}
 
-                            @if (auth()->check() && auth()->user()->role === 'admin')
+                            {{-- @if (auth()->check() && auth()->user()->role === 'admin')
                                 <x-dropdown-link href="{{ route('admin.staff.trashed') }}">
                                     {{ __('Trashed Staff') }}
                                 </x-dropdown-link>
-                            @endif
+                            @endif --}}
 
                             <div class="border-t border-gray-200"></div>
 
@@ -141,7 +145,7 @@
 
                             <x-dropdown-link href="#"
                                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                {{ __('Log Out') }}
+                                <i class="fas fa-sign-out-alt"></i> {{ __('Log Out') }} 
                             </x-dropdown-link>
 
                             {{-- <x-dropdown-link href="http://staff.test/logout?redirect={{ urlencode('http://e-cuti.test/local-logout') }}">
@@ -177,8 +181,8 @@
         </div>
 
         <!-- Responsive Settings Options -->
-        <div class="pt-4 pb-1 border-t border-gray-200">
-            <div class="flex items-center px-4">
+        <div class="pt-1 pb-1 border-t border-gray-200">
+            {{-- <div class="flex items-center px-4">
                 @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
                     <div class="shrink-0 me-3">
                         <img class="size-10 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}"
@@ -190,12 +194,18 @@
                     <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
                     <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
                 </div>
-            </div>
+            </div> --}}
 
-            <div class="mt-3 space-y-1">
+
+
+            <div class="space-y-1">
+                <x-responsive-nav-link href="{{ env('OAUTH_SERVER_URL') }}">
+                    <i class="fas fa-home"></i></i> {{ __('CSMS Dashboard') }}
+                </x-responsive-nav-link>
+
                 <!-- Account Management -->
                 <x-responsive-nav-link href="{{ route('profile.show') }}" :active="request()->routeIs('profile.show')">
-                    {{ __('Profile') }}
+                    <i class="fas fa-user"></i></i> {{ __('Profile') }}
                 </x-responsive-nav-link>
 
                 {{-- @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
@@ -210,7 +220,7 @@
                 </form>
                 <x-responsive-nav-link href="#"
                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                    {{ __('Log Out') }}
+                    <i class="fas fa-sign-out-alt"></i></i> {{ __('Log Out') }}
                 </x-responsive-nav-link>
 
                 {{-- <x-responsive-nav-link href="http://staff.test/logout?redirect={{ urlencode('http://e-cuti.test/local-logout') }}">
@@ -218,7 +228,7 @@
                 </x-responsive-nav-link> --}}
 
                 <!-- Team Management -->
-                @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
+                {{-- @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
                     <div class="border-t border-gray-200"></div>
 
                     <div class="block px-4 py-2 text-xs text-gray-400">
@@ -249,7 +259,7 @@
                             <x-switchable-team :team="$team" component="responsive-nav-link" />
                         @endforeach
                     @endif
-                @endif
+                @endif --}}
             </div>
         </div>
     </div>
