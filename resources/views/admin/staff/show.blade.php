@@ -13,24 +13,6 @@
             <div class="col-md-4">
                 <div class="card p-3 d-flex align-items-center justify-content-center"
                     style="height: 100%; text-align: center;">
-
-                    <!-- Edit Button (Positioned at the top-right corner) -->
-                    <a href="{{ route('admin.staff.edit', $staff->id) }}" class="btn btn-sm btn-primary position-absolute"
-                        style="top: 10px; right: 10px;">
-                        <i class="fas fa-edit"></i> Edit
-                    </a>
-                    <div>
-                        @if ($staff->profile_image)
-                            <img id="profileImagePreview" src="{{ asset('storage/' . $staff->profile_image) }}"
-                                alt="Profile Image" class="rounded-circle mb-3 border border-secondary"
-                                style="width: 150px; height: 150px; object-fit: cover;">
-                        @else
-                            <!-- Profile Image -->
-                            <img id="profileImagePreview" src="{{ asset('storage/default.png') }}" alt="Default Image"
-                                class="rounded-circle mb-3 border border-secondary"
-                                style="width: 150px; height: 150px; object-fit: cover;">
-                        @endif
-                    </div>
                 </div>
             </div>
 

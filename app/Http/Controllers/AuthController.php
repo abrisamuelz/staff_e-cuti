@@ -113,8 +113,8 @@ class AuthController extends Controller
             $image = base64_decode($base64Image);
 
             if ($image === false) {
-                // Decoding failed; fall back to a default avatar.
-                $profilePhotoUrl = 'https://ui-avatars.com/api/?name=' . urlencode($oauthUser['name'] ?? 'User') . '&color=7F9CF5&background=EBF4FF';
+                // Decoding failed; fall back to a default avatar. in public folder (default-profile-photo.png)
+                $profilePhotoUrl = null;
             } else {
                 // Ensure the directory exists.
                 $directory = storage_path('app/public/profiles');
@@ -134,7 +134,7 @@ class AuthController extends Controller
             }
         } else {
             // Use a default avatar if no image data is provided.
-            $profilePhotoUrl = 'https://ui-avatars.com/api/?name=' . urlencode($oauthUser['name'] ?? 'User') . '&color=7F9CF5&background=EBF4FF';
+            $profilePhotoUrl = null;
         }
 
         // Update or create the local user in System B.
