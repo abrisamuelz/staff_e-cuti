@@ -25,7 +25,7 @@
 
                         {{-- manage user --}}
                         <x-nav-link href="{{ route('admin.user.index') }}" :active="request()->routeIs('admin.user.*')">
-                            {{ __('Manage User') }}
+                            {{ __('Show User') }}
                         </x-nav-link>
                     @endif
                 </div>

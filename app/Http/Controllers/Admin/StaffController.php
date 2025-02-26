@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -42,16 +43,41 @@ class StaffController extends Controller
     }
 
 
-    public function create()
+    public function staffSync(Request $request)
     {
-        // get all staff name and id
-        $staff = Staff::select('id', 'full_name')->get();
 
-        $viewData = [
-            'staff' => $staff,
-        ];
-        return view('admin.staff.create', $viewData);
+        $clientId = config('services.oauth.client_id');
+        $clientSecret = config('services.oauth.client_secret');
+        $serverUrl = config('services.oauth.server_url');
+
+        $response = Http::withHeaders([
+            'X-Client-ID' => $clientId,
+            'X-Client-Secret' => $clientSecret,
+        ])->get($serverUrl . '/api/fetch-staff');
+
+        if ($response->successful()) {
+            $staffData = $response->json()['data'];
+
+            // Process and store the fetched data in System B's database
+            foreach ($staffData as $staff) {
+                Staff::updateOrCreate(
+                    ['nric' => $staff['nric']], // Unique constraint (use appropriate identifier)
+                    [
+                        'full_name' => $staff['full_name'],
+                        'email_personal' => $staff['email_personal'],
+                        'email_company' => $staff['email_company'],
+                        'phone_number' => $staff['phone_number'],
+                        'work_type' => $staff['work_type'],
+                        'starting_date' => $staff['starting_date'],
+                    ]
+                );
+            }
+            return response()->json(['message' => 'Staff data synchronized successfully']);
+        } else {
+            return response()->json(['message' => 'Failed to fetch data'], 500);
+        }
     }
+
 
     public function store(Request $request)
     {
@@ -70,7 +96,7 @@ class StaffController extends Controller
         ]);
 
         if ($validator->fails()) {
-            
+
             return redirect()->back()->withErrors($validator->errors())->withInput()->with('error', 'Validation failed');
         }
 

@@ -24,7 +24,9 @@
                 <th>Registered Name</th>
                 <th>Email</th>
                 <th>Role</th>
-                <th>Actions</th>
+                <th>Registered At</th>
+                <th>Last Login</th>
+                {{-- <th>Actions</th> --}}
             </tr>
         </thead>
         <tbody>
@@ -34,13 +36,15 @@
                     <td>{{ $person->name }}</td>
                     <td>{{ $person->email }}</td>
                     <td>{{ ucfirst($person->role) }}</td>
-                    <td>
+                    <td>{{ $person->created_at->diffForHumans() }} ({{ $person->created_at->format('d M, Y') }})</td>
+                    <td>{{ $person->updated_at->diffForHumans() }} ({{ $person->updated_at->format('d M, Y') }})</td>
+                    {{-- <td>
                         @if($person->id != auth()->user()->id)
                             <a href="{{ route('admin.user.edit', $person->id) }}" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i> Edit</a>
                         @else
                             -
                         @endif
-                    </td>
+                    </td> --}}
                 </tr>
             @empty
                 <tr>

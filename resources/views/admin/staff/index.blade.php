@@ -7,11 +7,11 @@
             <h1 class="fw-bold text-dark mb-0">Staff Management</h1>
         </div>
     </div>
-    <a href="{{ route('admin.staff.create') }}" class="btn btn-primary mb-3">Add New Staff</a>
-
-    {{-- @if (session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif --}}
+    
+    <form method="POST" action="{{ route('admin.staff.sync') }}" class="mb-3">
+        @csrf
+        <button class="btn btn-primary" type="submit">Sync Staff Table</button>
+    </form>
 
     <!-- Search Form -->
     <form method="GET" action="{{ route('admin.staff.index') }}" class="mb-3">
