@@ -36,9 +36,10 @@
             @forelse ($staff as $person)
                 <tr>
                     <td>{{ $loop->iteration }}</td>
-                    <td>{{ $person->full_name }}</td>
+                    {{-- capitalize each words --}}
+                    <td>{{ strtoupper($person->full_name) }}</td>
                     <td>{{ $person->nric }}</td>
-                    <td>{{ ucfirst(str_replace('_', ' ', $person->work_type)) }}</td>
+                    <td>{{ ucwords(str_replace('_', ' ', $person->work_type)) }}</td>
                     <td>
                         <a href="{{ route('admin.staff.show', $person->id) }}" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>
                     </td>

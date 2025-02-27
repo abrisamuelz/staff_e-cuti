@@ -44,7 +44,7 @@
                                 <div class="mb-3">
                                     <label for="full_name" class="form-label">Full Name</label>
                                     <input type="text" name="full_name" id="full_name" class="form-control"
-                                        value="{{ old('full_name', $staff->full_name) }}" required readonly>
+                                        value="{{ old('full_name', strtoupper($staff->full_name)) }}" required readonly>
                                 </div>
                                 <div class="mb-3">
                                     <label for="nric" class="form-label">NRIC</label>
