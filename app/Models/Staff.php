@@ -21,6 +21,7 @@ class Staff extends Model
         'email_personal',
         'email_company',
         'phone_number',
+        'oauth_group_id',
     ];
 
     public function internDetails()
@@ -28,17 +29,37 @@ class Staff extends Model
         return $this->hasOne(InternDetail::class, 'staff_id');
     }
 
-    public function workTypeLogs()
+    // check if current user email is same as staff email ($id)
+    public static function isStaffEmail(int $staff_id = null, $user = null): int
     {
-        return $this->hasMany(WorkTypeLog::class, 'staff_id');
+        $user = $user ?? auth()->user();
+        if (!$user) {
+            return 0; // Not authenticated
+        }
+
+        $staff = Staff::where('email_personal', $user->email)
+            ->orWhere('email_company', $user->email)
+            ->orWhere('id', $staff_id)
+            ->first();
+
+        if (!$staff) {
+            return 0; // Staff not found
+        }
+
+        // Update staff user_id if null
+        if ($staff->user_id === null) {
+            $staff->user_id = $user->id;
+            $staff->linked_at = now();
+            $staff->save();
+        }
+
+        // Check user_id match
+        return $staff->user_id === $user->id ? 1 : 2;
     }
 
-    // check if current user email is same as staff email ($id)
-    public static function isStaffEmail($id)
+    // connect to user
+    public function user()
     {
-        return Staff::where('email_personal', auth()->user()->email)
-            ->orWhere('email_company', auth()->user()->email)
-            ->where('id', $id)
-            ->exists();
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

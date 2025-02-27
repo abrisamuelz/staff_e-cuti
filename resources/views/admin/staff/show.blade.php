@@ -29,10 +29,10 @@
                                 <a class="nav-link" id="work-tab" data-bs-toggle="tab" href="#work" role="tab"
                                     aria-controls="work" aria-selected="false">Work</a>
                             </li>
-                            <li class="nav-item">
+                            {{-- <li class="nav-item">
                                 <a class="nav-link" id="changelog-tab" data-bs-toggle="tab" href="#changelog" role="tab"
                                     aria-controls="changelog" aria-selected="false">Change Log</a>
-                            </li>
+                            </li> --}}
                         </ul>
                     </div>
                     <div class="card-body">
@@ -54,17 +54,17 @@
                                 <div class="mb-3">
                                     <label for="email_personal" class="form-label">Personal Email</label>
                                     <input type="email" name="email_personal" id="email_personal" class="form-control"
-                                        value="{{ old('email_personal', $staff->email_personal) }}" required readonly>
+                                        value="{{ old('email_personal', $staff->email_personal ?? '-') }}" readonly>
                                 </div>
                                 <div class="mb-3">
                                     <label for="email_company" class="form-label">Company Email</label>
                                     <input type="email" name="email_company" id="email_company" class="form-control"
-                                        value="{{ old('email_company', $staff->email_company) }}" readonly>
+                                        value="{{ old('email_company', $staff->email_company ?? '-') }}" readonly>
                                 </div>
                                 <div class="mb-3">
                                     <label for="phone_number" class="form-label">Phone Number</label>
                                     <input type="text" name="phone_number" id="phone_number" class="form-control"
-                                        value="{{ old('phone_number', $staff->phone_number) }}" readonly>
+                                        value="{{ old('phone_number', $staff->phone_number ?? '-') }}" readonly>
                                 </div>
                             </div>
 
@@ -101,33 +101,28 @@
                                     <div class="mb-3">
                                         <label for="university" class="form-label">University</label>
                                         <input type="text" name="university" id="university" class="form-control"
-                                            value="{{ old('university', $staff->internDetails->university ?? '') }}"
+                                            value="{{ old('university', $staff->internDetails->university ?? '-') }}"
                                             readonly>
                                     </div>
                                     <div class="mb-3">
                                         <label for="date_start" class="form-label">Internship Start Date</label>
                                         <input type="date" name="date_start" id="date_start" class="form-control"
-                                            value="{{ old('date_start', $staff->internDetails->date_start ?? '') }}"
+                                            value="{{ old('date_start', $staff->internDetails->date_start ?? '-') }}"
                                             readonly>
                                     </div>
                                     <div class="mb-3">
                                         <label for="date_end" class="form-label">Internship End Date</label>
                                         <input type="date" name="date_end" id="date_end" class="form-control"
-                                            value="{{ old('date_end', $staff->internDetails->date_end ?? '') }}" readonly>
+                                            value="{{ old('date_end', $staff->internDetails->date_end ?? '-') }}" readonly>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="supervisor_id" class="form-label">Supervisor</label>
+                                        <label for="supervisor_name" class="form-label">Supervisor</label>
                                         @if ($staff->internDetails === null)
-                                            <input type="text" name="supervisor_id" id="supervisor_id"
+                                            <input type="text" name="supervisor_name" id="supervisor_name"
                                                 class="form-control" value="No supervisor assigned" readonly>
                                         @else
-                                            @foreach ($staffList as $supervisor)
-                                                @if ($supervisor->id === $staff->internDetails->supervisor_id)
-                                                    <input type="text" name="supervisor_id" id="supervisor_id"
-                                                        class="form-control" value="{{ $supervisor->full_name }}"
-                                                        readonly>
-                                                @endif
-                                            @endforeach
+                                            <input type="text" name="supervisor_name" id="supervisor_name"
+                                                class="form-control" value="{{ $staff->internDetails->supervisor_name ?? '-' }}" readonly>
                                         @endif
                                     </div>
                                     <div class="mb-3">
@@ -135,7 +130,7 @@
                                             Supervisor</label>
                                         <input type="text" name="university_supervisor" id="university_supervisor"
                                             class="form-control"
-                                            value="{{ old('university_supervisor', $staff->internDetails->university_supervisor ?? '') }}"
+                                            value="{{ old('university_supervisor', $staff->internDetails->university_supervisor ?? '-') }}"
                                             readonly>
                                     </div>
                                     <div class="mb-3">
@@ -143,7 +138,7 @@
                                             Supervisor Contact</label>
                                         <input type="text" name="university_supervisor_contact"
                                             id="university_supervisor_contact" class="form-control"
-                                            value="{{ old('university_supervisor_contact', $staff->internDetails->university_supervisor_contact ?? '') }}"
+                                            value="{{ old('university_supervisor_contact', $staff->internDetails->university_supervisor_contact ?? '-') }}"
                                             readonly>
                                     </div>
                                     {{-- additional details --}}
@@ -170,7 +165,7 @@
                             </div>
 
                             <!-- Change Log Tab -->
-                            <div class="tab-pane fade" id="changelog" role="tabpanel" aria-labelledby="changelog-tab">
+                            {{-- <div class="tab-pane fade" id="changelog" role="tabpanel" aria-labelledby="changelog-tab">
                                 <ul class="list-group">
                                     @forelse ($changeLogs as $log)
                                         <li class="list-group-item">
@@ -181,7 +176,7 @@
                                         <li class="list-group-item text-muted">No changes logged.</li>
                                     @endforelse
                                 </ul>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>

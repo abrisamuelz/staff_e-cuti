@@ -58,9 +58,11 @@ class StaffController extends Controller
         if ($response->successful()) {
             $staffData = $response->json()['data'];
 
+            // dd($staffData);
+
             // Process and store the fetched data in System B's database
             foreach ($staffData as $staff) {
-                Staff::updateOrCreate(
+                $staff_created = Staff::updateOrCreate(
                     ['nric' => $staff['nric']], // Unique constraint (use appropriate identifier)
                     [
                         'full_name' => $staff['full_name'],
@@ -71,10 +73,28 @@ class StaffController extends Controller
                         'starting_date' => $staff['starting_date'],
                     ]
                 );
+
+                // intern details
+                if ($staff['intern_details'] != null) {
+                    $internDetails = $staff['intern_details'];
+
+                    InternDetail::updateOrCreate(
+                        ['staff_id' => $staff_created->id],
+                        [
+                            'university' => $internDetails['university'],
+                            'date_start' => $internDetails['date_start'],
+                            'date_end' => $internDetails['date_end'],
+                            'supervisor_name' => $internDetails['supervisor_name'],
+                            'university_supervisor' => $internDetails['university_supervisor'],
+                            'university_supervisor_contact' => $internDetails['university_supervisor_contact'],
+                            'other_details' => $internDetails['other_details'],
+                        ]
+                    );
+                }
             }
-            return response()->json(['message' => 'Staff data synchronized successfully']);
+            return back()->with('success', 'Staff data has been successfully synced');
         } else {
-            return response()->json(['message' => 'Failed to fetch data'], 500);
+            return back()->with('error', 'Failed to sync staff data');
         }
     }
 
@@ -88,12 +108,10 @@ class StaffController extends Controller
             return $value->id != $id;
         });
         $staff = Staff::with('internDetails')->findOrFail($id);
-        $changeLogs = WorkTypeLog::where('staff_id', $id)->orderBy('created_at', 'desc')->get();
 
         $viewData = [
             'staff' => $staff,
             'staffList' => $staffList,
-            'changeLogs' => $changeLogs,
         ];
 
         return view('admin.staff.show', $viewData);

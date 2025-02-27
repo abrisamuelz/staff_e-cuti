@@ -60,4 +60,15 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    // staff relationship
+    public function staff()
+    {
+        return $this->hasOne(Staff::class, 'user_id');
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
 }

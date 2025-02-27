@@ -9,6 +9,8 @@ return new class extends Migration {
     {
         Schema::create('staff', function (Blueprint $table) {
             $table->id();
+            $table->integer('user_id')->nullable(); // User ID from users table if user already registered
+            $table->dateTimeTz('linked_at')->nullable(); // Date when user linked to staff
             $table->string('full_name');
             $table->string('nric')->unique();
             $table->date('starting_date');
@@ -23,18 +25,18 @@ return new class extends Migration {
             $table->softDeletes();
         });
 
-        // Schema::create('intern_details', function (Blueprint $table) {
-        //     $table->id();
-        //     $table->foreignId('staff_id')->constrained('staff')->onDelete('cascade');
-        //     $table->string('university');
-        //     $table->date('date_start');
-        //     $table->date('date_end');
-        //     $table->foreignId('supervisor_id')->nullable()->constrained('staff');
-        //     $table->string('university_supervisor');
-        //     $table->string('university_supervisor_contact');
-        //     $table->text('other_details')->nullable();
-        //     $table->timestamps();
-        // });
+        Schema::create('intern_details', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('staff_id')->constrained('staff')->onDelete('cascade');
+            $table->string('university');
+            $table->date('date_start');
+            $table->date('date_end');
+            $table->string('supervisor_name')->nullable();
+            $table->string('university_supervisor');
+            $table->string('university_supervisor_contact');
+            $table->text('other_details')->nullable();
+            $table->timestamps();
+        });
 
         // Schema::create('work_type_logs', function (Blueprint $table) {
         //     $table->id();

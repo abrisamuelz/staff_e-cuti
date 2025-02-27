@@ -15,9 +15,4 @@ class InternDetail extends Model
     {
         return $this->belongsTo(Staff::class);
     }
-
-    public function supervisor()
-    {
-        return $this->belongsTo(Staff::class, 'supervisor_id');
-    }
 }
