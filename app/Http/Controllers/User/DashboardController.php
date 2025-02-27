@@ -25,7 +25,6 @@ class DashboardController extends Controller
             return view('user.dashboard', $viewData);
         }
         // Get oldest starting work log for the staff
-        $staff->starting_working = optional($staff->workTypeLogs()->orderBy('created_at', 'asc')->first())->start_date;
 
         // Convert to Carbon instance if it's not null
         if ($staff->starting_working) {

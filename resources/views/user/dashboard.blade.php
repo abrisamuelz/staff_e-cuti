@@ -14,11 +14,6 @@
                 <!-- Profile Card -->
                 <div class="col-md-3 mb-3 mb-md-0 p-md-2">
                     <div class="card p-3 text-center position-relative h-100 shadow-sm border-0">
-                        <!-- View Detail Button -->
-                        <a href="{{ route('staff.show', $staff->id) }}" class="text-secondary position-absolute" 
-                            style="top: 10px; right: 10px;">
-                            <i class="fas fa-eye"></i>
-                        </a>
             
                         @if (isset($staff->profile_image))
                             <img src="{{ asset('storage/' . $staff->profile_image) }}" alt="Profile Image"
