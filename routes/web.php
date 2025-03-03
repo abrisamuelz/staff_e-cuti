@@ -13,6 +13,9 @@ Route::get('/', function () {
 
 require_once __DIR__ . '/admin/staff_management.php';
 require_once __DIR__ . '/admin/user_management.php';
+require_once __DIR__ . '/admin/staff_leave.php';
+require_once __DIR__ . '/admin/leave_management.php';
+
 
 require_once __DIR__ . '/user/dashboard.php';
 // require_once __DIR__ . '/user/staff.php';

@@ -21,12 +21,20 @@
                     @if (auth()->check() && auth()->user()->role === 'admin')
                         {{-- active acept route --}}
                         <x-nav-link href="{{ route('admin.staff.index') }}" :active="request()->routeIs('admin.staff.*')">
-                            {{ __('Manage Staff') }}
+                            {{ __('Show Staff') }}
                         </x-nav-link>
 
                         {{-- manage user --}}
                         <x-nav-link href="{{ route('admin.user.index') }}" :active="request()->routeIs('admin.user.*')">
                             {{ __('Show User') }}
+                        </x-nav-link>
+
+                        <x-nav-link href="{{ route('admin.leave-management.index') }}" :active="request()->routeIs('leaves-management.*')">
+                            {{ __('Manage Leave') }}
+                        </x-nav-link>
+
+                        <x-nav-link href="{{ route('admin.staff-leaves.index') }}" :active="request()->routeIs('staff-leaves.*')">
+                            {{ __('Manage Staff Leave') }}
                         </x-nav-link>
                     @endif
                 </div>
