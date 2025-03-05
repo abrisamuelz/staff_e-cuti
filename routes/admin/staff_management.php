@@ -7,6 +7,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     Route::post('staff/sync', [StaffController::class, 'staffSync'])->name('staff.sync');
     Route::get('staff', [StaffController::class, 'index'])->name('staff.index');
     Route::get('staff/{id}', [StaffController::class, 'show'])->name('staff.show');
+    Route::get('staff/{id}/edit', [StaffController::class, 'edit'])->name('staff.edit');
+    Route::put('staff/{id}', [StaffController::class, 'update'])->name('staff.update');
 });
 
 

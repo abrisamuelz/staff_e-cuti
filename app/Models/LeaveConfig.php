@@ -17,4 +17,9 @@ class LeaveConfig extends Model
     {
         return $this->belongsTo(LeaveType::class, 'leave_type_id');
     }
+
+    public function userBalances()
+    {
+        return $this->hasMany(LeaveUserBalance::class, 'leave_config_id');
+    }
 }

@@ -62,4 +62,14 @@ class Staff extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function leaveRecords()
+    {
+        return $this->hasMany(LeaveRecord::class, 'staff_id');
+    }
+
+    public function leaveBalances()
+    {
+        return $this->hasMany(LeaveUserBalance::class, 'staff_id');
+    }
 }

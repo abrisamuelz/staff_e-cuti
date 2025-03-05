@@ -43,7 +43,7 @@
     <!-- Leave Configurations Card (Bottom Card) -->
     <div class="card shadow">
         <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">Leave Configurations (Child of Leave Types)</h5>
+            <h5 class="mb-0">Leave Config. (Selectable by staff)</h5>
             <a href="{{ route('admin.leave-management.leave-configs.create') }}" class="btn btn-light btn-sm">+ Create</a>
         </div>
         <div class="card-body">

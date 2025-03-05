@@ -8,16 +8,9 @@
                 <h1 class="fw-bold text-dark mb-0">Staff Details - Show</h1>
             </div>
         </div>
-        <div class="row">
-            <!-- Profile Image -->
-            <div class="col-md-4">
-                <div class="card p-3 d-flex align-items-center justify-content-center"
-                    style="height: 100%; text-align: center;">
-                </div>
-            </div>
-
+        <div class="row mb-3">
             <!-- Details Card -->
-            <div class="col-md-8">
+            <div class="col-md-4 px-1">
                 <div class="card">
                     <div class="card-header">
                         <ul class="nav nav-tabs card-header-tabs" id="staffTabs" role="tablist">
@@ -29,10 +22,6 @@
                                 <a class="nav-link" id="work-tab" data-bs-toggle="tab" href="#work" role="tab"
                                     aria-controls="work" aria-selected="false">Work</a>
                             </li>
-                            {{-- <li class="nav-item">
-                                <a class="nav-link" id="changelog-tab" data-bs-toggle="tab" href="#changelog" role="tab"
-                                    aria-controls="changelog" aria-selected="false">Change Log</a>
-                            </li> --}}
                         </ul>
                     </div>
                     <div class="card-body">
@@ -122,7 +111,8 @@
                                                 class="form-control" value="No supervisor assigned" readonly>
                                         @else
                                             <input type="text" name="supervisor_name" id="supervisor_name"
-                                                class="form-control" value="{{ $staff->internDetails->supervisor_name ?? '-' }}" readonly>
+                                                class="form-control"
+                                                value="{{ $staff->internDetails->supervisor_name ?? '-' }}" readonly>
                                         @endif
                                     </div>
                                     <div class="mb-3">
@@ -157,26 +147,70 @@
                                         <textarea name="reason" id="reason" class="form-control">
                                                 @if ($staff->work_type === 'terminated')
 {{ $changeLogs->where('work_type', 'terminated')->last()->reason ?? '' }}
-                                                @else{{ '' }}
+@else
+{{ '' }}
 @endif
                                             </textarea>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                            <!-- Change Log Tab -->
-                            {{-- <div class="tab-pane fade" id="changelog" role="tabpanel" aria-labelledby="changelog-tab">
-                                <ul class="list-group">
-                                    @forelse ($changeLogs as $log)
-                                        <li class="list-group-item">
-                                            {{ $log->reason }}
-                                            ({{ \Carbon\Carbon::parse($log->start_date)->format('d/m/Y') }})
-                                        </li>
-                                    @empty
-                                        <li class="list-group-item text-muted">No changes logged.</li>
-                                    @endforelse
-                                </ul>
-                            </div> --}}
+
+            <!-- Leave config details -->
+            <div class="col-md-8 px-1">
+                <div class="card">
+                    <div class="card-header">Leave Configuration</div>
+                    <div class="card-body">
+                        @if ($staff_leave_balance->count() > 0)
+                            @php
+                                $groupedLeaveBalance = $staff_leave_balance->groupBy('year');
+                                $currentYear = date('Y');
+                                $selectedYear = request()->get('year', $currentYear);
+                                $selectedYear = array_key_exists($selectedYear, $groupedLeaveBalance->toArray())
+                                    ? $selectedYear
+                                    : $groupedLeaveBalance->keys()->first();
+                                $currentLeaveBalance = $groupedLeaveBalance[$selectedYear] ?? collect([]);
+                            @endphp
+
+                            <div class="mb-3">
+                                <label for="year" class="form-label">Year</label>
+                                <select name="year" id="year" class="form-select"
+                                    onchange="reloadWithYear(this.value)">
+                                    @foreach ($groupedLeaveBalance as $year => $leaveBalance)
+                                        <option value="{{ $year }}"
+                                            @if ($year == $selectedYear) selected @endif>{{ $year }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            @foreach ($currentLeaveBalance as $leave)
+                                <div class="mb-3">
+                                    <label class="form-label">{{ $leave->leaveType->name }}</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">Annual Limit</span>
+                                        <input type="number" class="form-control" value="{{ $leave->annual_limit }}"
+                                            readonly>
+                                        <span class="input-group-text">Taken</span>
+                                        <input type="number" class="form-control" value="{{ $leave->taken }}" readonly>
+                                        <span class="input-group-text">Carry Forward</span>
+                                        <input type="number" class="form-control"
+                                            value="{{ $leave->carry_forward_leaves }}" readonly>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @else
+                            <div class="alert alert-danger" role="alert">
+                                No Leave Configuration found for this staff.
+                            </div>
+                        @endif
+
+                        <div class="d-flex justify-content-end mt-3">
+                            <button class="btn btn-primary"
+                                onclick="window.location.href='{{ route('admin.staff.edit', $staff->id) }}'">Edit</button>
                         </div>
                     </div>
                 </div>
@@ -220,12 +254,28 @@
     </script>
 
     <script>
-        document.getElementById('profile_image').addEventListener('change', function(event) {
-            const [file] = event.target.files;
-            if (file) {
-                const preview = document.getElementById('profileImagePreview');
-                preview.src = URL.createObjectURL(file);
-            }
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.leave-toggle').forEach(function(checkbox) {
+                checkbox.addEventListener('change', function() {
+                    const leaveType = checkbox.getAttribute('data-leavetype');
+                    const container = document.getElementById(leaveType + '_container');
+                    const disabledLabel = document.getElementById(leaveType + '_disabled_label');
+
+                    if (checkbox.checked) {
+                        container.style.display = 'block';
+                        disabledLabel.style.display = 'none';
+                    } else {
+                        container.style.display = 'none';
+                        disabledLabel.style.display = 'block';
+                    }
+                });
+            });
         });
+
+        function reloadWithYear(year) {
+            const url = new URL(window.location.href);
+            url.searchParams.set('year', year);
+            window.location.href = url.toString();
+        }
     </script>
 @endsection

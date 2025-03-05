@@ -32,10 +32,6 @@
                         <x-nav-link href="{{ route('admin.leave-management.index') }}" :active="request()->routeIs('leaves-management.*')">
                             {{ __('Manage Leave') }}
                         </x-nav-link>
-
-                        <x-nav-link href="{{ route('admin.staff-leaves.index') }}" :active="request()->routeIs('staff-leaves.*')">
-                            {{ __('Manage Staff Leave') }}
-                        </x-nav-link>
                     @endif
                 </div>
             </div>
@@ -136,18 +132,6 @@
                                 <i class="fas fa-user"></i> {{ __('Profile') }} 
                             </x-dropdown-link>
 
-                            {{-- @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
-                                <x-dropdown-link href="{{ route('api-tokens.index') }}">
-                                    {{ __('API Tokens') }}
-                                </x-dropdown-link>
-                            @endif --}}
-
-                            {{-- @if (auth()->check() && auth()->user()->role === 'admin')
-                                <x-dropdown-link href="{{ route('admin.staff.trashed') }}">
-                                    {{ __('Trashed Staff') }}
-                                </x-dropdown-link>
-                            @endif --}}
-
                             <div class="border-t border-gray-200"></div>
 
                             <!-- Authentication -->
@@ -157,9 +141,6 @@
                                 <i class="fas fa-sign-out-alt"></i> {{ __('Log Out') }} 
                             </x-dropdown-link>
 
-                            {{-- <x-dropdown-link href="http://staff.test/logout?redirect={{ urlencode('http://e-cuti.test/local-logout') }}">
-                                {{ __('Log Out') }}
-                            </x-dropdown-link> --}}
                         </x-slot>
                     </x-dropdown>
                 </div>
