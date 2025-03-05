@@ -10,7 +10,7 @@
         </div>
         <div class="row mb-3">
             <!-- Details Card -->
-            <div class="col-md-4 px-1">
+            <div class="col-md-4 px-1 mb-2">
                 <div class="card">
                     <div class="card-header">
                         <ul class="nav nav-tabs card-header-tabs" id="staffTabs" role="tablist">
@@ -161,7 +161,7 @@
 
 
             <!-- Leave config details -->
-            <div class="col-md-8 px-1">
+            <div class="col-md-8 px-1 mb-2">
                 <div class="card">
                     <div class="card-header">Leave Configuration</div>
                     <div class="card-body">
@@ -189,16 +189,30 @@
 
                             @foreach ($currentLeaveBalance as $leave)
                                 <div class="mb-3">
-                                    <label class="form-label">{{ $leave->leaveType->name }}</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text">Annual Limit</span>
-                                        <input type="number" class="form-control" value="{{ $leave->annual_limit }}"
-                                            readonly>
-                                        <span class="input-group-text">Taken</span>
-                                        <input type="number" class="form-control" value="{{ $leave->taken }}" readonly>
-                                        <span class="input-group-text">Carry Forward</span>
-                                        <input type="number" class="form-control"
-                                            value="{{ $leave->carry_forward_leaves }}" readonly>
+                                    <label class="form-label fw-bold">{{ $leave->leaveType->name }}</label>
+
+                                    <div class="row g-2">
+                                        <div class="col-12 col-md-4">
+                                            <div class="input-group">
+                                                <span class="input-group-text">Annual</span>
+                                                <input type="number" class="form-control"
+                                                    value="{{ $leave->annual_limit }}" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-4">
+                                            <div class="input-group">
+                                                <span class="input-group-text">Taken</span>
+                                                <input type="number" class="form-control" value="{{ $leave->taken }}"
+                                                    readonly>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-4">
+                                            <div class="input-group">
+                                                <span class="input-group-text">Carry Fwd</span>
+                                                <input type="number" class="form-control"
+                                                    value="{{ $leave->carry_forward_leaves }}" readonly>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             @endforeach
@@ -209,7 +223,10 @@
                         @endif
 
                         <div class="d-flex justify-content-end mt-3">
-                            <button class="btn btn-primary"
+                            {{-- back --}}
+                            <button class="btn btn-secondary" onclick="window.location.href='{{ route('admin.staff.index') }}'">Back</button>
+                            {{-- edit --}}
+                            <button class="btn btn-primary ms-2"
                                 onclick="window.location.href='{{ route('admin.staff.edit', $staff->id) }}'">Edit</button>
                         </div>
                     </div>

@@ -237,7 +237,10 @@
                         @endforeach
 
                         <div class="d-flex justify-content-end mt-3">
-                            <button class="btn btn-primary" onclick="submitLeaveForm()">Save</button>
+                            {{-- cancel --}}
+                            <a href="{{ route('admin.staff.show', $staff->id) }}" class="btn btn-secondary">Cancel</a>
+                            {{-- save --}}
+                            <button class="btn btn-primary ms-2" onclick="submitLeaveForm()">Save</button>
                         </div>
                     </div>
                 </div>
