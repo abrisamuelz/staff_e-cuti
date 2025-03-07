@@ -205,9 +205,9 @@
                 @endif --}}
 
                 <!-- Authentication -->
-                <form id="logout-form" action="http://staff.test/logout?redirect={{ urlencode('http://e-cuti.test/local-logout') }}" method="POST" style="display:none;">
+                <form id="logout-form" action="{{ env('OAUTH_SERVER_URL') }}/logout?redirect={{ urlencode(env('APP_URL') . '/local-logout') }}" method="POST" style="display:none;">
                     @csrf
-                </form>
+                </form>                
                 <x-responsive-nav-link href="#"
                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     <i class="fas fa-sign-out-alt"></i></i> {{ __('Log Out') }}
