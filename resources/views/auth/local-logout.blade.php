@@ -3,6 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Logged Out</title>
+    <script>
+        setTimeout(() => {
+            window.close();
+        }, 500);
+    </script>
     <style>
         body {
             background-color: #f7fafc;
