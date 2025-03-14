@@ -3,14 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Staff;
+use App\Models\LeaveType;
+use App\Helpers\ApiHelper;
+use App\Models\LeaveRecord;
 use App\Models\WorkTypeLog;
 use App\Models\InternDetail;
 use Illuminate\Http\Request;
+use App\Models\LeaveUserBalance;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use App\Models\LeaveRecord;
-use App\Models\LeaveType;
-use App\Models\LeaveUserBalance;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
@@ -58,20 +59,9 @@ class StaffController extends Controller
     public function staffSync(Request $request)
     {
 
-        $clientId = config('services.oauth.client_id');
-        $clientSecret = config('services.oauth.client_secret');
-        $serverUrl = config('services.oauth.server_url');
+        $staffData = ApiHelper::fetchData('api/fetch-staff');
 
-        $response = Http::withHeaders([
-            'X-Client-ID' => $clientId,
-            'X-Client-Secret' => $clientSecret,
-        ])->get($serverUrl . '/api/fetch-staff');
-
-        if ($response->successful()) {
-            $staffData = $response->json()['data'];
-
-            // dd($staffData);
-
+        if ($staffData != null) {
             // Process and store the fetched data in System B's database
             foreach ($staffData as $staff) {
                 $staff_created = Staff::updateOrCreate(
@@ -103,10 +93,12 @@ class StaffController extends Controller
                         ]
                     );
                 }
+                Staff::linkStaff($staff_created->id);
             }
+
             return back()->with('success', 'Staff data has been successfully synced');
         } else {
-            return back()->with('error', 'Failed to sync staff data');
+            return back()->with('error', 'Failed to sync staff data : ' . $response->status());
         }
     }
 

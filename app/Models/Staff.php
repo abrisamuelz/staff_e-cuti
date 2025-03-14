@@ -30,7 +30,7 @@ class Staff extends Model
     }
 
     // check if current user email is same as staff email ($id)
-    public static function isStaffEmail(int $staff_id = null, $user = null): int
+    public static function isStaffEmail($staff_id = null, $user = null): int
     {
         $user = $user ?? auth()->user();
         if (!$user) {
@@ -55,6 +55,32 @@ class Staff extends Model
 
         // Check user_id match
         return $staff->user_id === $user->id ? 1 : 2;
+    }
+
+    //link user with staff email
+    public static function linkStaff($staff_id = null)
+    {
+        if ($staff_id) {
+            $staff = Staff::find($staff_id);
+            $user = User::where('email', $staff->email_personal)
+                ->orWhere('email', $staff->email_company)
+                ->first();
+
+            if (!$user) {
+                return 0; // User not found
+            }
+
+            // Update staff user_id if null
+            if ($staff->user_id === null) {
+                $staff->user_id = $user->id;
+                $staff->linked_at = now();
+                $staff->save();
+                
+                return 1;
+            }
+            
+            return 2; // Staff already linked , not updated
+        }
     }
 
     // connect to user

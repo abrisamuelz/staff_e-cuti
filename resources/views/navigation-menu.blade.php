@@ -17,6 +17,10 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
 
+                    <x-nav-link href="{{ route('user.leave.index') }}" :active="request()->routeIs('user.leave.*')">
+                        {{ __('Leave') }}
+                    </x-nav-link>
+
                     <!-- Admin Links (Only for Admins) -->
                     @if (auth()->check() && auth()->user()->role === 'admin')
                         {{-- active acept route --}}

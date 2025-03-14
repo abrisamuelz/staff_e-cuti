@@ -17,6 +17,7 @@ require_once __DIR__ . '/admin/leave_management.php';
 
 
 require_once __DIR__ . '/user/dashboard.php';
+require_once __DIR__ . '/user/leave.php';
 // require_once __DIR__ . '/user/staff.php';
 
 require_once __DIR__ . '/auth-sso.php';

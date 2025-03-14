@@ -71,4 +71,29 @@ class User extends Authenticatable
     {
         return $this->role === 'admin';
     }
+
+    public static function linkUser($user_id = null)
+    {
+        if ($user_id) {
+            $user = User::find($user_id);
+            $staff = Staff::where('email_personal', $user->email)
+                ->orWhere('email_company', $user->email)
+                ->first();
+
+            if (!$staff) {
+                return 0; // Staff not found
+            }
+
+            // Update staff user_id if null
+            if ($staff->user_id === null) {
+                $staff->user_id = $user->id;
+                $staff->linked_at = now();
+                $staff->save();
+
+                return 1; // Staff found and linked
+            }
+
+            return 2; // Staff found but not linked
+        }
+    }
 }
